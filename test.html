@@ -1,0 +1,434 @@
+<style>
+    //-------
+// Fonts
+//-------
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,500,700');
+
+//----------------
+// Base Settings
+//----------------
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #6b91ee;
+  font-family: 'Montserrat', sans-serif;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+//----------------
+// Color Variables
+//----------------
+$black: #3d4852;
+$blue: #688ee8;
+$green: #6cc08a;
+$red: #ed655e;
+
+$primary-text-color: $black;
+$secondary-theme-color: $blue;
+$primary-progress-bar-color: $red;
+$secondary-progress-bar-color: $green;
+
+
+//----------------
+// App Styles
+//----------------
+.file-upload__modal {
+  display: grid;
+  width: 350px;
+  margin: 50px auto;
+  padding: 25px 0;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px 0 rgba(#332e3a, .1);
+}
+
+.file-upload__modal-title {
+  margin-bottom: 30px;
+  color: $primary-text-color;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1.3px;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.file-upload__error {
+  display: none;
+  margin: 0 25px 30px;
+  color: $red;
+  font-size: 14px;
+}
+
+.file__list {
+  margin: 0 25px;
+}
+
+.file-upload__form {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  width: 300px;
+  height: 150px;
+  margin: 0 25px;
+  transition: all .3s;
+  border: 2px dashed rgba($secondary-theme-color, .3);
+  border-radius: 15px;
+  
+  &:hover {
+    border: 2px dashed $secondary-theme-color;
+  }
+}
+
+.file__input {
+  display: none;
+}
+
+.file__input-label {
+  width: 150px;
+  color: $primary-text-color;
+  font-size: 14px;
+  letter-spacing: 1.3px;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.file__input-label-button {
+  background-color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.3px;
+  line-height: 1.5; 
+  transition: all .3s;
+  color: $secondary-theme-color;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+
+  &:hover {
+    color: rgba($secondary-theme-color, .3);
+  }
+}
+
+.file-details__container {
+  display: grid;
+  grid-template-columns: 235px 20px;
+  padding-left: 15px;
+}
+
+.file-output__list-item {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  align-items: end;
+  margin: 0 auto 25px;
+  list-style: none;
+}
+
+.file-output__list-item-image {
+  display: inline;
+  width: 30px;
+  height: 38px;
+  opacity: .4;
+}
+
+.file-output__list-item-name {
+  margin-bottom: 10px;
+  opacity: .4;
+  font-size: 13px;
+}
+
+.file-output__list-item--is-complete {
+  display: flex;
+  align-self: center;
+  width: 10px;
+  height: 10px;
+}
+
+.file-output__progress-bar {
+  width: 255px;
+}
+
+.file-output__progress-bar[value] {
+  appearance: none;
+  height: 2px;
+  column-span: 1 / 3;
+}
+
+.file-output__progress-bar[value]::-webkit-progress-bar {
+  background-color: rgba($primary-progress-bar-color, .2);
+}
+
+.progress-bar--in-progress[value]::-webkit-progress-value {
+  background-color: $primary-progress-bar-color;
+}
+
+.progress-bar--is-finished[value]::-webkit-progress-value {
+  transition: all .25s;
+  background-color: $secondary-progress-bar-color;
+}
+</style>
+
+<div class="file-upload__modal" role="section">
+    <h1 class="file-upload__modal-title" role="heading">Upload File</h1>
+  <p class="file-upload__error" role="alertdialog"></p>
+    <ul class="file__list js-file__list" role="list"></ul>
+
+    <form class="file-upload__form js-dropzone" role="form">
+      <input
+        type="file"
+        id="file-dropzone"
+        class="file__input js-file__input"
+        multiple
+      >
+      <label
+        class="file__input-label"
+        for="file-dropzone"
+      >Drag file here or <button class="file__input-label-button" role="button">browse</button></label>
+    </form>
+
+    <script>
+        // Initialize Firebase
+// Fill in firebase data with your own information to get progress bar working
+var config = {
+	apiKey: "AIzaSyCG_92OLetfydA6KDg2kwweJF4bf4hG7Jw",
+  authDomain: "joxiplayer-site.firebaseapp.com",
+  databaseURL: "https://joxiplayer-site-default-rtdb.firebaseio.com",
+  projectId: "joxiplayer-site",
+  storageBucket: "joxiplayer-site.appspot.com",
+  messagingSenderId: "288570493379",
+  appId: "1:288570493379:web:8c1168c876624cc6a95576",
+  measurementId: "G-4J03BRQ7Y1",
+};
+firebase.initializeApp(config);
+
+const init = function() {
+	const fileInputElement = document.querySelector('.js-file__input');
+	const fileDropZone = document.querySelector('.js-dropzone');
+
+  // Prevents the default behavior of refresh
+  // Force click on the input element
+   document.querySelector('.file__input-label-button').addEventListener('click', function(e) {
+      e.preventDefault();
+      fileInputElement.click();
+    })
+  
+	// Handle Creating Elements for the files using the Browse button
+	fileInputElement.addEventListener('change', function(e) {
+		const validatedFiles = fileValidation([...fileInputElement.files]);
+		createFileDOMNode(validatedFiles);
+	});
+
+	// Prevents default behavior of automatically opening the file
+	fileDropZone.addEventListener('dragover', function(e) {
+		e.preventDefault();
+	});
+
+	// Gets node element list of files Converts them to a list of Arrays
+	// Then calls createFileDOMNode to create DOM Element of the files
+	fileDropZone.addEventListener('drop', function(e) {
+		e.preventDefault();
+		const unvalidatedFiles = getArrayOfFileData([...e.dataTransfer.items]);
+		const validatedFiles = fileValidation(unvalidatedFiles);
+		createFileDOMNode(validatedFiles);
+	});
+};
+
+// Validates each file that it is the format we accept
+// Then pushes the validated file to a new array
+const fileValidation = function(files) {
+	const errMessageOutput = document.querySelector('.file-upload__error');
+	const validatedFileArray = [];
+	const supportedExts = ['png', 'jpg', 'doc', 'xls', 'pdf', 'ai', 'psd'];
+	files.forEach(file => {
+		const ext = getFileExtension(file);
+		if (supportedExts.indexOf(ext) === -1) {
+			let errMessage =
+				'Please upload a .doc, .png, .psd, .pdf, .ai, .xls or .jpg file only.';
+			errMessageOutput.style.display = 'block';
+			errMessageOutput.textContent = errMessage;
+			// return '';
+		} else {
+			errMessageOutput.style.display = 'none';
+			validatedFileArray.push(file);
+		}
+	});
+	return validatedFileArray;
+};
+
+// Returns an array of the file data
+const getArrayOfFileData = function(files) {
+	const fileDataArray = [];
+	files.forEach(file => {
+		if (file.kind === 'file') {
+			fileDataArray.push(file.getAsFile());
+		}
+	});
+	return fileDataArray;
+};
+
+// Creates list item DOM nodes for each file uploaded
+const createFileDOMNode = function(files) {
+	const fileList = document.querySelector('.js-file__list');
+
+	files.forEach(file => {
+		// Create a DOM element(s) for each file dropped
+		const listItemElement = document.createElement('li');
+		const fileDetailsContainer = document.createElement('div');
+		const fileOutputListItemImage = document.createElement('img');
+		const fileOutputListItemName = document.createElement('span');
+		const fileOutputListItemSVGIsComplete = document.createElement('img');
+		const fileOutputListItemProgressBar = document.createElement('progress');
+
+		// Append elements to the DOM and parent components to the elements
+		fileList.appendChild(listItemElement);
+		listItemElement.appendChild(fileOutputListItemImage);
+		listItemElement.appendChild(fileDetailsContainer);
+		fileDetailsContainer.appendChild(fileOutputListItemName);
+		fileDetailsContainer.appendChild(fileOutputListItemSVGIsComplete);
+		fileDetailsContainer.appendChild(fileOutputListItemProgressBar);
+
+		// Add classs to the create element
+		listItemElement.classList.add('file-output__list-item');
+		fileDetailsContainer.classList.add('file-details__container');
+		fileOutputListItemImage.classList.add('file-output__list-item-image');
+		fileOutputListItemSVGIsComplete.classList.add(
+			'file-output__list-item--is-complete'
+		);
+		fileOutputListItemName.classList.add('file-output__list-item-name');
+		fileOutputListItemProgressBar.classList.add('file-output__progress-bar');
+
+		//Set aria roles
+		listItemElement.setAttribute('role', 'listitem');
+		fileOutputListItemImage.setAttribute('role', 'image');
+
+		fileOutputListItemName.textContent = truncateString(file.name, 25);
+
+		const ext = getFileExtension(file);
+		setAssociatedSVGWithFileType(ext, fileOutputListItemImage);
+		updateDatabase(
+			file,
+			fileOutputListItemProgressBar,
+			fileOutputListItemName,
+			fileOutputListItemImage,
+			fileOutputListItemSVGIsComplete
+		);
+	});
+};
+
+const updateDatabase = function(
+	file,
+	progressBarElement,
+	fileNameTextElement,
+	fileTypeImageElement,
+	fileCompletionImageElement
+) {
+	// Create a storage ref
+	const storageRef = firebase.storage().ref('myFiles/' + file.name);
+	// Upload a file
+	let task = storageRef.put(file);
+
+	// Set progress bar initial and max values
+	progressBarElement.value = 0;
+	progressBarElement.max = 100;
+
+	// Update progress bar
+	task.on(
+		'state_changed',
+		function progress(snapshot) {
+			const percentage =
+				(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			progressBarElement.value = percentage;
+			progressBarElement.classList.add('progress-bar--in-progress');
+			fileCompletionImageElement.src =
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-close.svg';
+		},
+
+		function error(err) {
+      console.log('An error has occured!');
+    },
+
+		function complete() {
+			fileNameTextElement.style.opacity = '1';
+			fileTypeImageElement.style.opacity = '1';
+			progressBarElement.classList.add('progress-bar--is-finished');
+			fileCompletionImageElement.src =
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-check.svg';
+		}
+	);
+};
+
+// Returns the files type extension
+const getFileExtension = function(file) {
+	return file.name.split('.').pop();
+};
+
+// Associates what svg gets matched to what type of file uploaded
+const setAssociatedSVGWithFileType = function(ext, nodeElement) {
+	switch (ext) {
+		case 'jpg':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-jpg.svg'
+			);
+			break;
+		case 'png':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-png.svg'
+			);
+			break;
+		case 'doc':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-doc.svg'
+			);
+			break;
+		case 'ai':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-ai.svg'
+			);
+			break;
+		case 'psd':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-psd.svg'
+			);
+			break;
+		case 'pdf':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-pdf.svg'
+			);
+			break;
+		case 'xls':
+			nodeElement.setAttribute(
+				'src',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/2684911/icon-file-xls.svg'
+			);
+			break;
+		default:
+			return '';
+	}
+};
+
+// Truncates a string if too long
+const truncateString = function(str, num) {
+	if (str.length > num) {
+		return str.slice(0, num) + '...';
+	} else {
+		return str;
+	}
+};
+
+init();
+
+    </script>
