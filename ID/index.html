@@ -496,46 +496,6 @@
 		<span id="toast_message"></span>
 	</div>
     <!-- Including External JavaScript File Here -->
-    <script>
-		function ShowToast() {
-			var sToast = document.getElementById('toast_container');
-			sToast.setAttribute('style', 'visibility:visible; animation:animation_toast 5s linear 1;');
-
-			var mToast = document.getElementById('toast_message');
-			mToast.innerHTML = "Halaman Request Belum Tersedia";
-
-			setTimeout(HideToast, 5000);
-		}
-
-		function ShowToastTwo() {
-			var sToast = document.getElementById('toast_container');
-			sToast.setAttribute('style', 'visibility:visible; animation:animation_toast 5s linear 1;');
-
-			var mToast = document.getElementById('toast_message');
-			mToast.innerHTML = "Tampilan Ini Segera Hadir";
-
-			setTimeout(HideToast, 5000);
-		}
-
-        function ShowPremium() {
-			var sToast = document.getElementById('toast_container');
-			sToast.setAttribute('style', 'visibility:visible; animation:animation_toast 5s linear 1;');
-
-			var mToast = document.getElementById('toast_message');
-			mToast.innerHTML = "Paket Premium Belum Tersedia";
-
-			setTimeout(HideToast, 5000);
-		}
-
-        function HideToast() {
-			var sToast = document.getElementById('toast_container');
-			sToast.setAttribute('style', 'visibility:hidden; animation:animation_toast 5s linear 1;');
-
-			var mToast = document.getElementById('toast_message');
-			mToast.innerHTML = "This is a toast message";
-		}
-	</script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha256-eVNjHw5UeU0jUqPPpZHAkU1z4U+QFBBY488WvueTm88=" crossorigin="anonymous"></script>
     <script src="script.js"></script>
 </body>
