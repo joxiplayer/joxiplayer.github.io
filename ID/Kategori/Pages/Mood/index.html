@@ -1,37 +1,113 @@
 <style type="text/css">
-	.toast_container {
-		width: 270px;
-		height: 40px;
-		left: 50%;
-		bottom: 10%;
-		position: fixed;
-		background: #424242;
-		color: #FFFFFF;
-		text-align: center;
-		padding-top: 13px;
-		border-radius: 15px;
-		opacity: .9;
-		transform: translate(-50%, -50%);
-		visibility: hidden;
-	}
+	.popup{
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,.3);
+      position: fixed;
+      opacity: 0;
+      transition: all .2s ease-in;
+    }
 
-	@keyframes animation_toast {
-		0% {
-			opacity: 0;
-		}
+    .popup__content{
+      width: 300px;
+      text-align: center;
+      position: relative;
+      margin: 20vh auto;
+    }
 
-		30% {
-			opacity: 1;
-		}
+    .popup__image{
+      width: 100%;
+      margin-bottom: -20px;
+      border-radius: 5px;
+    }
 
-		60% {
-			opacity: 1;
-		}
+    .popup__dismiss{
+    position: absolute;
+    top: -10;
+    right: -10;
+    width: 30px;
+    }
 
-		100% {
-			opacity: 0;
-		}
-	}
+    .popup--show{
+      opacity: 1;
+    }
+
+    .popup--close{
+      display: none;
+      transition: all .2s ease-out;
+    }
+
+
+
+.frame {
+  width: 90%;
+  margin: 40px auto;
+  text-align: center;
+}
+button {
+  margin: 20px;
+}
+.custom-btn {
+  width: 200px;
+  height: 40px;
+  top: -65px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+
+/* 11 */
+.btn-11 {
+  border: none;
+  background: #f4364c;
+    background: linear-gradient(0deg, #f4364c 0%, #f4364c 100%);
+    color: #fff;
+    overflow: hidden;
+}
+.btn-11:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.btn-11:before {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    top: -180px;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background-color: #fff;
+    animation: shiny-btn1 3s ease-in-out infinite;
+}
+.btn-11:hover{
+  opacity: .7;
+}
+.btn-11:active{
+  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
+              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+    inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+}
+
+
+@-webkit-keyframes shiny-btn1 {
+    0% { -webkit-transform: scale(0) rotate(45deg); opacity: 0; }
+    80% { -webkit-transform: scale(0) rotate(45deg); opacity: 0.5; }
+    81% { -webkit-transform: scale(4) rotate(45deg); opacity: 1; }
+    100% { -webkit-transform: scale(50) rotate(45deg); opacity: 0; }
+}
 </style>
 
 <!DOCTYPE html>
@@ -43,7 +119,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="shortcut icon" href="assets/img/logo.jpeg" type="image/x-icon">
+    <link rel="shortcut icon" href="/../assets/img/logo.jpeg" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/style.css">
 
@@ -481,8 +557,44 @@
     <div id="toast_container" class="toast_container">
 		<span id="toast_message"></span>
 	</div>
+
+    <div class="popup">
+        <div class="popup__content">
+          <img class="popup__image" src="img/Informasi.png" alt="Popup Iklan">
+          <!--CLose--
+          <img class="popup__dismiss" src="img/btn-close.png" alt="Close">
+          <!--CLose-->
+          <div class="frame">
+            <button class="custom-btn btn-11 open">Open<div class="dot"></div></button>
+        </div>
+      </div>
     <!-- Including External JavaScript File Here -->
     <script>
+        var popup = document.querySelector(".popup");
+    var dismiss = document.querySelector(".popup__dismiss");
+    var shop = document.querySelector(".open");
+
+    setTimeout(function(){
+      popup.classList.add("popup--show");
+    },3000);
+
+    dismiss.addEventListener("click",function(){
+      console.log("kil dismiss");
+      popup.classList.remove("popup--show");
+      popup.classList.add("popup--close");
+    })
+
+    shop.addEventListener("click",function(){
+      console.log("kil shop");
+      /* Javascript /
+      popup.classList.remove("popup--show");
+      popup.classList.add("popup--close");
+      /* Javascript */
+      alert("Mohon Maaf Atas Error Ini");
+      window.location="https://joxiplayer.github.io/ID/Kategori/"
+    })
+
+
 		function ShowToast() {
 			var sToast = document.getElementById('toast_container');
 			sToast.setAttribute('style', 'visibility:visible; animation:animation_toast 5s linear 1;');
