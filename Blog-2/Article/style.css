@@ -1198,18 +1198,6 @@ section {
     z-index: 1;
 }
 
-.btn-simple-active{
-    color: #8f9bad;
-    padding: 9.5px 17px;
-    background: transparent;
-    border: 1px solid #000000;
-}
-
-.btn-simple-active:hover {
-    color: #8f9bad;
-    border-color: #8f9bad;
-}
-
 .btn-simple {
     color: #8f9bad;
     padding: 9.5px 20px;
