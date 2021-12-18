@@ -565,7 +565,9 @@ button {
           <img class="popup__dismiss" src="img/btn-close.png" alt="Close">
           <!--CLose-->
           <div class="frame">
-            <button class="custom-btn btn-11 open">Open<div class="dot"></div></button>
+              <a href="https://joxiplayer.github.io/ID/Kategori/" onclick="alert('Maaf Atas Error Ini');">
+            <button class="custom-btn btn-11">Open<div class="dot"></div></button>
+            </a>
         </div>
       </div>
     <!-- Including External JavaScript File Here -->
@@ -576,7 +578,7 @@ button {
 
     setTimeout(function(){
       popup.classList.add("popup--show");
-    },3000);
+    },4000);
 
     dismiss.addEventListener("click",function(){
       console.log("kil dismiss");
@@ -591,7 +593,7 @@ button {
       popup.classList.add("popup--close");
       /* Javascript */
       alert("Mohon Maaf Atas Error Ini");
-      window.location="https://joxiplayer.github.io/ID/Kategori/"
+      window.location("https://joxiplayer.github.io/ID/Kategori/");
     })
 
 

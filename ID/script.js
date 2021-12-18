@@ -123,6 +123,15 @@ window.onload = () =>{
                 },
 
 
+                /***********----Pop----************/
+                {
+                    name : 'Takut',
+                    artist : 'Idgitaf',
+                    image :'pop/takut.jpg',
+                    songUrl :'pop/takut.mp3',
+                    duration :'05 : 19' 
+                },
+
                 /***********----Mood----************/
                 {
                     name : 'My Universe',
@@ -138,7 +147,7 @@ window.onload = () =>{
                     artist : 'Segera Hadir',
                     image :'segera-hadir.jpg',
                     songUrl :'segera-hadir.mp3',
-                    duration :'00 : 02'
+                    duration :'00 : 02' 
                 },
 
 
@@ -385,21 +394,29 @@ window.onload = () =>{
 
                 DOM.audioListParent[listChange].insertAdjacentHTML('beforeend',content); 
             }
-
+            // Yang Direkomendasikan 
                 for(let i = 0 ; i < 8 ; i++ ){
                         addListUI(0 , i);
                 }
+            // Tok Tracks
                 for(let i = 8 ; i < 16 ; i++ ){
                     addListUI(1 , i);
                 }
+            // Pop
                 for(let i = 16 ; i < 17 ; i++ ){
                     addListUI(2 , i);
                 }
+            // Mood
                 for(let i = 17 ; i < 18 ; i++ ){
                     addListUI(3 , i);
                 }
-                for(let i = 17 ; i < 18 ; i++ ){
-                    addListUI(4 , i);
+            // Chill
+                for(let i = 18 ; i < 19 ; i++ ){
+                addListUI(4 , i);
+                }
+            // Nostalgia
+                for(let i = 18 ; i < 19 ; i++ ){
+                addListUI(5 , i);
                 }
 
     
