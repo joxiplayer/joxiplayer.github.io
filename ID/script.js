@@ -10,7 +10,7 @@ window.onload = () =>{
                 {
                     name : 'Angin Datang',
                     artist : 'KABAR-BALE PULANG',
-                    image :'all/angin-datang-kasih.jpg',
+                    image :'all/angin-datang-kasih.png',
                     songUrl :'all/angin-datang-kasih-kabar.mp3',
                     duration :'03 : 26'
                 },
@@ -31,14 +31,14 @@ window.onload = () =>{
                 {
                     name : 'Cinta Luar Biasa',
                     artist : 'Andmesh Kamaleng',
-                    image :'populer/Cinta-Luar-Biasa.jpg',
+                    image :'populer/cinta-luar-biasa.png',
                     songUrl :'populer/cinta-luar-biasa.mp3',
                     duration :'04 : 31' 
                 },
                 {
                     name : 'Bukti',
                     artist : 'Virgoun',
-                    image :'populer/bukti.jpg',
+                    image :'populer/bukti.png',
                     songUrl :'populer/bukti.mp3',
                     duration :'04 : 49' 
                 },
@@ -131,6 +131,13 @@ window.onload = () =>{
                     songUrl :'pop/takut.mp3',
                     duration :'05 : 19' 
                 },
+                {
+                    name : 'Mungkin Hari Ini',
+                    artist : 'Anneth',
+                    image :'pop/mungkin-hari-ini.jpg',
+                    songUrl :'pop/mungkin-hari-ini.mp3',
+                    duration :'04 : 26' 
+                },
 
                 /***********----Mood----************/
                 {
@@ -162,6 +169,13 @@ window.onload = () =>{
                     image :'all/wonderland.jpg',
                     songUrl :'all/wonderland.mp3',
                     duration :'10 : 52' 
+                },
+                {
+                    name : 'Takut',
+                    artist : 'Idgitaf',
+                    image :'pop/takut.jpg',
+                    songUrl :'pop/takut.mp3',
+                    duration :'05 : 19' 
                 },
                 {
                     name : 'Nightcore Thunder',
@@ -403,19 +417,19 @@ window.onload = () =>{
                     addListUI(1 , i);
                 }
             // Pop
-                for(let i = 16 ; i < 17 ; i++ ){
+                for(let i = 16 ; i < 18 ; i++ ){
                     addListUI(2 , i);
                 }
             // Mood
-                for(let i = 17 ; i < 18 ; i++ ){
+                for(let i = 18 ; i < 19 ; i++ ){
                     addListUI(3 , i);
                 }
             // Chill
-                for(let i = 18 ; i < 19 ; i++ ){
+                for(let i = 19 ; i < 20 ; i++ ){
                 addListUI(4 , i);
                 }
             // Nostalgia
-                for(let i = 18 ; i < 19 ; i++ ){
+                for(let i = 19 ; i < 20 ; i++ ){
                 addListUI(5 , i);
                 }
 
